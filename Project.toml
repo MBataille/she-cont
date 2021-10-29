@@ -1,0 +1,4 @@
+[deps]
+DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
+FFTW = "7a1cc6ca-52ef-59f5-83cd-3a7055c09341"
+Pardiso = "46dd5b70-b6fb-5a00-ae2d-e8fea33afaf2"
