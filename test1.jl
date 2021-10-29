@@ -3,9 +3,9 @@ FFTW.set_provider!("mkl")
 
 struct Params
     N::Int
-    L::Float    
-    ϵ::Float
-    ν::Float
+    L::Float64  
+    ϵ::Float64
+    ν::Float64
 end
 
 struct Flags
@@ -25,6 +25,7 @@ function deriv_mat(A::Matrix{Float64}, L::Float64; axis::Char='x', order::Int64=
         dim = 2;
     else
         println("Axis not understood");
+    end
     factor = (2π * im / L)^order;
     N = size(A)[1];
     k = fftfreq(N) * N;
@@ -50,7 +51,14 @@ end
 
 using DelimitedFiles
 
-u = readdlm("data/epsilon1.16.values", ' ', Float64)
+function parseValues(filename)
+    open(filename, "r") do f
+        s = read(f, String)
+    end
+    replace(s, " \n" => "\n")
+end
+
+u = readdlm("data/epsilon1.16.values", ' ', Float64, '\n')
 
 ## Params are the following
 N = 128
@@ -60,3 +68,6 @@ L = N *Δx
 ϵ = 1.16
 
 p = Params(N, L, ν, ϵ)
+S = State(p, u)
+
+V = RHS_SHE(S)
